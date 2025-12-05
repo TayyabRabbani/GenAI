@@ -6,7 +6,6 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter, Language
 from langchain_core.prompts import PromptTemplate
 from langchain_huggingface import HuggingFaceEndpoint, ChatHuggingFace
 
-os.environ["HUGGINGFACEHUB_API_TOKEN"] = "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"
 
 TEXT = """
 import heapq
