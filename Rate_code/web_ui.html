@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Code Reviewer</title>
+    <!-- 1. Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Simple transition for a cleaner loading feel */
+        #results-container {
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans p-8 min-h-screen">
+
+    <div class="container mx-auto max-w-4xl">
+        <h1 class="text-3xl font-bold text-center mb-6 text-indigo-400">AI Code Reviewer</h1>
+
+        <!-- Code Input -->
+        <div class="mb-4">
+            <label for="code-input" class="block text-sm font-medium text-gray-400 mb-2">Paste your code here:</label>
+            <textarea id="code-input" rows="15"
+                class="w-full p-4 bg-gray-800 border border-gray-700 rounded-lg text-gray-200 font-mono text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                placeholder="def hello_world():&#10;    print(&quot;Hello&quot;)"></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center">
+            <button id="submit-btn"
+                class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
+                Review Code
+            </button>
+        </div>
+
+        <!-- Results Section -->
+        <div id="results-container" class="mt-8 opacity-0">
+            <h2 class="text-2xl font-semibold mb-4 text-indigo-400">Review Results</h2>
+
+            <!-- This will hold the structured output -->
+            <div id="results-output" class="bg-gray-800 rounded-lg p-6 border border-gray-700 shadow-inner">
+                <!-- Content will be injected by JavaScript -->
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 2. JavaScript Logic -->
+    <script>
+        const codeInput = document.getElementById('code-input');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultsContainer = document.getElementById('results-container');
+        const resultsOutput = document.getElementById('results-output');
+
+        submitBtn.addEventListener('click', async () => {
+            const code = codeInput.value;
+            if (!code.trim()) {
+                alert('Please paste some code to review.');
+                return;
+            }
+
+            // --- 1. Set Loading State ---
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Reviewing...';
+            resultsContainer.style.opacity = '0.5';
+            resultsContainer.classList.remove('opacity-0'); // Make sure it's visible
+            resultsOutput.innerHTML = '<p class="text-gray-400">Fetching review from AI...</p>';
+
+
+            try {
+                // --- 2. Create Payload ---
+                const payload = {
+                    code: code
+                };
+
+                // --- 3. Make API Call ---
+                const response = await fetch('/review', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                // --- 4. Handle Response ---
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.detail || `Server error: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                // --- 5. Display Results ---
+                displayResults(data);
+
+            } catch (error) {
+                console.error('Error fetching review:', error);
+                displayError(error.message);
+            } finally {
+                // --- 6. Reset UI ---
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Review Code';
+                resultsContainer.style.opacity = '1';
+            }
+        });
+
+        function displayResults(data) {
+            // Clear previous results
+            resultsOutput.innerHTML = '';
+
+            // 1. Add Score
+            const scoreEl = document.createElement('div');
+            scoreEl.className = 'mb-4';
+            scoreEl.innerHTML = `<strong class="text-indigo-300">Score:</strong> <span class="font-bold text-2xl ${getScoreColor(data.score)}">${data.score} / 10</span>`;
+            resultsOutput.appendChild(scoreEl);
+
+            // 2. Add Summary
+            const summaryEl = document.createElement('div');
+            summaryEl.className = 'mb-4';
+            summaryEl.innerHTML = `<strong class="text-indigo-300">Summary:</strong><p class="text-gray-300 mt-1">${data.summary}</p>`;
+            resultsOutput.appendChild(summaryEl);
+
+            // 3. Add Issues
+            const issuesEl = document.createElement('div');
+            issuesEl.className = 'mb-4';
+            issuesEl.innerHTML = `<strong class="text-indigo-300">Issues:</strong>`;
+            if (data.issues && data.issues.length > 0) {
+                const issuesList = document.createElement('ul');
+                issuesList.className = 'list-disc list-inside mt-2 pl-4 text-red-300 space-y-1';
+                data.issues.forEach(issue => {
+                    const li = document.createElement('li');
+                    li.textContent = issue;
+                    issuesList.appendChild(li);
+                }); // <-- The typo 'L' was removed from here
+                issuesEl.appendChild(issuesList);
+            } else {
+                issuesEl.innerHTML += `<p class="text-green-300 mt-1">No issues found!</p>`;
+            }
+            resultsOutput.appendChild(issuesEl);
+
+            // 4. Add Suggestions
+            const suggestionsEl = document.createElement('div');
+            suggestionsEl.innerHTML = `<strong class="text-indigo-300">Suggestions:</strong>`;
+            if (data.suggestions && data.suggestions.length > 0) {
+                const suggestionsList = document.createElement('ul');
+                suggestionsList.className = 'list-disc list-inside mt-2 pl-4 text-yellow-300 space-y-1';
+                data.suggestions.forEach(suggestion => {
+                    const li = document.createElement('li');
+                    li.textContent = suggestion;
+                    suggestionsList.appendChild(li);
+                });
+                suggestionsEl.appendChild(suggestionsList);
+            } else {
+                suggestionsEl.innerHTML += `<p class="text-gray-300 mt-1">No suggestions.</p>`;
+            }
+            resultsOutput.appendChild(suggestionsEl);
+        }
+
+        function displayError(errorMessage) {
+            resultsOutput.innerHTML = `
+                <strong class="text-red-500 text-lg">Error</strong>
+                <p class="text-red-300 mt-2">${errorMessage}</p>
+                <p class="text-gray-400 text-sm mt-4">Check the browser console (F12) and your Python server terminal for more details.</p>
+            `;
+        }
+
+        function getScoreColor(score) {
+            if (score >= 8) return 'text-green-400';
+            if (score >= 5) return 'text-yellow-400';
+            return 'text-red-400';
+        }
+
+    </script>
+</body>
+</html>
+
