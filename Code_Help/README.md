@@ -1,135 +1,154 @@
-# AI Code Review Helper
+# AI Code Reviewer (LLM + Heuristic Fallback)
 
-This project is a lightweight code-review backend + web UI that uses a Hugging Face model to evaluate code quality.  
-You send a code snippet, and the service returns a structured JSON review containing a score, summary, issues, and improvement suggestions.  
-It can be used directly in the browser (`web_ui.html`) or as the backend for an editor/IDE extension.
+An end-to-end **AI-powered Python code review system** built with **FastAPI**, **LangChain**, and **Hugging Face LLMs**, featuring a **deterministic heuristic fallback** for reliability and a simple **web UI** for interactive testing.
 
----
-
-## 🚀 Features
-
-- Reviews code using a Hugging Face LLM  
-  **Default model:** `Qwen/Qwen2.5-Coder-32B-Instruct`
-- Automatic fallback heuristic reviewer when no API token is available
-- Returns strictly formatted JSON containing:
-  - **score** (0–10)
-  - **summary** (short explanation)
-  - **issues** (concrete problems found)
-  - **suggestions** (exactly 5 actionable improvements)
-- Clean TailwindCSS web interface (`web_ui.html`)
-- FastAPI backend providing a single `/review` endpoint  
-  → Easy to integrate into extensions, CLI tools, or automation pipelines
+This project is designed to be **robust, modular, and extensible**, with a clean backend architecture that supports future static analysis and advanced reasoning.
 
 ---
 
-## 📁 Project Structure
+## Features
+
+- 🧠 **LLM-based Python code review**
+- 🛡️ **Heuristic fallback** when LLM is unavailable
+- 🧱 **Clean, modular backend architecture**
+- 🌐 **FastAPI REST API**
+- 🖥️ **Web-based UI** for testing reviews
+- 🔁 **Chunk-based processing** for large code inputs
+- ✅ Always returns a valid review (never crashes)
+
+---
+
+## Project Architecture
 
 ```
 Rate_code/
-├─ .env               # Hugging Face API token (you create this)
-├─ api.py             # FastAPI backend, serves /review + UI
-├─ chat_model.py      # Helper to build ChatHuggingFace model
-├─ code.py            # Standalone CLI-style rater + aggregator
-├─ llm_model.py       # LangChain prompt + structured JSON parser
-└─ web_ui.html        # Browser UI
+│
+├── backend/
+│   └── app/
+│       ├── core/
+│       │   ├── reviewer.py
+│       │   ├── chunker.py
+│       │   └── aggregator.py
+│       │
+│       ├── models/
+│       │   ├── llm.py
+│       │   └── heuristic.py
+│       │
+│       ├── routes/
+│       │   └── review.py
+│       │
+│       ├── schemas/
+│       │   └── review.py
+│       │
+│       ├── utils/
+│       │   └── logging.py
+│       │
+│       ├── config.py
+│       └── main.py
+│
+├── web_ui.html
+├── .env
+└── README.md
 ```
 
 ---
 
-## 🧰 Prerequisites
+## How the System Works
 
-- **Python 3.8+**
-- **Hugging Face API Token**
-
-You can generate a token from your Hugging Face account settings and give it **read access** to models.
-
----
-
-## 🔧 Installation
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/<your-username>/<your-repo>.git
-cd <your-repo>/Rate_code
-```
-
-### 2. Create and activate a virtual environment
-
-```bash
-python -m venv venv
-```
-
-**Linux / macOS**
-```bash
-source venv/bin/activate
-```
-
-**Windows**
-```bash
-venv\Scripts\activate
-```
-
-### 3. Install dependencies
-```bash
-pip install -r requirements.txt
-```
+1. User pastes Python code in the web UI
+2. Code is sent to the `/review` API endpoint
+3. Backend splits the code into chunks
+4. Each chunk is reviewed using:
+   - **LLM**, if available
+   - **Heuristic fallback**, if not
+5. Results are aggregated into a single review
+6. Final structured JSON response is returned to the UI
 
 ---
 
-## ⚙️ Configuration
+## Tech Stack
 
-Create a `.env` file inside **Rate_code/**:
-
-```
-HUGGINGFACEHUB_API_TOKEN="hf_your_token_here"
-```
-
-### Ensure your code reads the token
-
-`chat_model.py` already loads the token from environment variables.
-
-**Important:**
-
-- Remove any hard-coded API tokens from source files  
-  (e.g., `os.environ["HUGGINGFACEHUB_API_TOKEN"] = "..."`)
-- Always rely on the `.env` file.
-
-If using `python-dotenv`, load it early inside `api.py`.
+- Python 3.10+
+- FastAPI
+- LangChain
+- Hugging Face Inference API
+- Qwen2.5-Coder-32B-Instruct
+- HTML + JavaScript (Tailwind CSS)
 
 ---
 
-## ▶️ Running the Server
+## Setup Instructions
 
-Inside the `Rate_code` directory:
+### Clone the repository
 
 ```bash
-python api.py
+git clone https://github.com/<your-username>/Rate_code.git
+cd Rate_code
 ```
 
-You should see:
+### Create environment (recommended)
 
+```bash
+conda create -n rate_code python=3.10 -y
+conda activate rate_code
 ```
-Starting FastAPI server on http://localhost:5000 ...
+
+### Install dependencies
+
+```bash
+pip install fastapi uvicorn langchain langchain-huggingface python-dotenv tf-keras
 ```
 
-### Access:
+### Configure environment variables
 
-- **API Docs:** http://localhost:5000/docs  
-- **Web UI:** http://localhost:5000/
+Create a `.env` file:
+
+```env
+HUGGINGFACEHUB_API_TOKEN=hf_xxxxxxxxxxxxxxxxxxxxxxxxx
+```
 
 ---
 
-## 🌐 Using the Web UI
+## Running the Project
 
-1. Start the server (`python api.py`)
-2. Open your browser → **http://localhost:5000/**
-3. Paste your code into the text area
-4. Click **Review Code**
+```bash
+uvicorn backend.app.main:app --reload
+```
 
-The UI will display:
+Open browser:
 
-- **Overall score**
-- **Short summary**
-- **List of issues**
-- **Five actionable suggestions**
+```
+http://127.0.0.1:8000
+```
+
+---
+
+## Example Output
+
+```json
+{
+  "score": 8,
+  "summary": "Aggregated review across code sections.",
+  "suggestions": [
+    "Add type hints for better readability.",
+    "Add a docstring.",
+    "Handle edge cases.",
+    "Add unit tests.",
+    "Consider performance improvements."
+  ],
+  "issues": []
+}
+```
+
+---
+
+## Status
+
+✅ Step 1 completed – Clean architecture + working LLM reviewer  
+🚧 Step 2 planned – AST-based static analysis
+
+---
+
+## License
+
+Educational / portfolio use.
