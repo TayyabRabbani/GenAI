@@ -1,0 +1,77 @@
+{% extends "reviewer/base.html" %}
+
+{% block title %}Dashboard | DSA Reviewer{% endblock %}
+{% block nav_dash %}active{% endblock %}
+{% block status %}Dashboard{% endblock %}
+
+{% block content %}
+    <div class="eyebrow">// Your DSA journey</div>
+    <h1 class="section-title">Solved<br>Problems</h1>
+
+    {% if total == 0 %}
+        <div class="empty">
+            <p class="bento-card__text" style="opacity:1;">No problems solved yet.</p>
+            <p style="margin-top:1rem;"><a href="{% url 'reviewer:index' %}" style="text-decoration:underline;color:var(--safety);font-weight:700;">Go solve one →</a></p>
+        </div>
+    {% else %}
+        <div class="stats">
+            <div class="stat stat--dark"><div class="stat__num">{{ total }}</div><div class="stat__label">Total solved</div></div>
+            <div class="stat"><div class="stat__num">{{ difficulty_counts.Easy }}</div><div class="stat__label">Easy</div></div>
+            <div class="stat"><div class="stat__num">{{ difficulty_counts.Medium }}</div><div class="stat__label">Medium</div></div>
+            <div class="stat"><div class="stat__num">{{ difficulty_counts.Hard }}</div><div class="stat__label">Hard</div></div>
+        </div>
+
+        <div class="toolbar">
+            <label class="field__label" for="topicFilter" style="margin-bottom:0;">Filter by topic</label>
+            <select id="topicFilter" class="select" onchange="filterTopics()">
+                <option value="__all__">All topics ({{ total }})</option>
+                {% for g in groups %}
+                <option value="{{ g.topic }}">{{ g.topic }} ({{ g.count }})</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        {% for g in groups %}
+        <div class="topic-block" data-topic="{{ g.topic }}">
+            <div class="topic-block__head">
+                <span class="topic-block__name">{{ g.topic }}</span>
+                <span class="topic-block__count">{{ g.count }} solved</span>
+            </div>
+            {% for p in g.items %}
+            <details class="pcard">
+                <summary class="pcard__summary">
+                    <span class="pcard__name">{{ p.name }}</span>
+                    <span class="pcard__meta">
+                        <span class="badge badge--{{ p.difficulty }}">{{ p.difficulty }}</span>
+                        <span class="pcard__chevron">&#9656;</span>
+                    </span>
+                </summary>
+                <div class="pcard__body">
+                    <div class="pcard__metarow">
+                        {% if p.score is not None %}<span>Score {{ p.score }}/10</span>{% endif %}
+                        <span>Solved {{ p.solved_at|date:"M j, Y" }}</span>
+                    </div>
+                    {% if p.summary %}<div class="pcard__detail">{{ p.summary }}</div>{% endif %}
+                    <div class="pcard__cx">Time {{ p.time_complexity|default:"N/A" }} &nbsp;·&nbsp; Space {{ p.space_complexity|default:"N/A" }}</div>
+                    <div class="pcard__label">Statement</div>
+                    <pre>{{ p.statement }}</pre>
+                    <div class="pcard__label">Solution</div>
+                    <pre>{{ p.solution }}</pre>
+                </div>
+            </details>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function filterTopics() {
+        const val = document.getElementById('topicFilter').value;
+        document.querySelectorAll('.topic-block').forEach(block => {
+            block.style.display = (val === '__all__' || block.dataset.topic === val) ? '' : 'none';
+        });
+    }
+</script>
+{% endblock %}

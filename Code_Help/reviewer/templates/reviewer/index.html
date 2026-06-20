@@ -1,0 +1,262 @@
+{% extends "reviewer/base.html" %}
+
+{% block title %}DSA Code Reviewer{% endblock %}
+{% block nav_review %}active{% endblock %}
+
+{% block content %}
+    <div class="eyebrow">// Paste a problem and your solution</div>
+    <h1 class="section-title">DSA Code<br>Reviewer</h1>
+
+    <div class="field-row">
+        <div class="field" style="flex: 2;">
+            <label class="field__label" for="probName">Problem name</label>
+            <input id="probName" class="input" type="text" placeholder="e.g. Two Sum">
+        </div>
+        <div class="field" style="flex: 1;">
+            <label class="field__label" for="difficulty">Difficulty</label>
+            <select id="difficulty" class="select">
+                {% for d in difficulties %}
+                <option value="{{ d }}" {% if d == "Medium" %}selected{% endif %}>{{ d }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="field">
+        <label class="field__label" for="probStatement">Problem statement</label>
+        <textarea id="probStatement" class="textarea textarea--stmt" placeholder="Paste the full LeetCode-style problem statement here..."></textarea>
+    </div>
+
+    <div class="field">
+        <label class="field__label" for="probSolution">Your solution (code)</label>
+        <textarea id="probSolution" class="textarea textarea--code" placeholder="Paste your solution code here..."></textarea>
+    </div>
+
+    <button id="reviewBtn" class="btn btn--primary" onclick="submitCode()">Rate My Code</button>
+
+    <!-- Loading log -->
+    <div id="loadingLog" class="log">
+        <div class="log__header">
+            <div class="log__title">Review Log</div>
+            <div style="font-size: 0.55rem; opacity: 0.5; text-transform: uppercase;">Qwen2.5-Coder-32B</div>
+        </div>
+        <div class="log__body" id="logBody"></div>
+    </div>
+
+    <!-- Verdict -->
+    <div id="verdict" class="verdict">
+        <div>
+            <div class="verdict__label" id="verdictLabel">—</div>
+            <div class="verdict__hint" id="verdictHint"></div>
+        </div>
+    </div>
+
+    <!-- Result cards -->
+    <div id="resultsGrid" class="bento__grid">
+        <div class="bento-card bento-card--narrow bento-card--dark">
+            <div class="bento-card__number">01 — Score</div>
+            <h3 class="bento-card__title">Algorithmic<br>Score</h3>
+            <div class="bento-card__stat" id="resScore">--<span style="font-size:0.4em;opacity:0.5">/10</span></div>
+        </div>
+        <div class="bento-card bento-card--narrow bento-card--safety">
+            <div class="bento-card__number" style="opacity:0.6">02</div>
+            <h3 class="bento-card__title">Time<br>Complexity</h3>
+            <p class="bento-card__text" style="opacity:0.85">Big-O Time</p>
+            <div class="bento-card__stat" id="resTime">O(?)</div>
+        </div>
+        <div class="bento-card bento-card--narrow">
+            <div class="bento-card__number">03</div>
+            <h3 class="bento-card__title">Space<br>Complexity</h3>
+            <p class="bento-card__text">Big-O Space</p>
+            <div class="bento-card__stat" id="resSpace">O(?)</div>
+        </div>
+        <div class="bento-card bento-card--wide">
+            <div class="bento-card__number">04</div>
+            <h3 class="bento-card__title">Review Summary</h3>
+            <p class="bento-card__text" id="resSummary" style="font-size: 1.1rem; line-height: 1.8;">Awaiting review...</p>
+        </div>
+        <div class="bento-card bento-card--mid">
+            <div class="bento-card__number">05</div>
+            <h3 class="bento-card__title">Issues Found</h3>
+            <ul class="list-items" id="resIssues"></ul>
+        </div>
+        <div class="bento-card bento-card--mid">
+            <div class="bento-card__number">06</div>
+            <h3 class="bento-card__title">Suggestions</h3>
+            <ul class="list-items" id="resSuggestions"></ul>
+        </div>
+    </div>
+
+    <!-- Topic modal (shown only when solved) -->
+    <div id="topicModal" class="modal-overlay">
+        <div class="modal">
+            <h3 class="modal__title">Solved! Save to dashboard</h3>
+            <p class="modal__text">Pick the topic this problem belongs to. We've pre-selected our best guess.</p>
+            <label class="field__label" for="topicSelect">Topic</label>
+            <select id="topicSelect" class="select">
+                {% for t in topics %}
+                <option value="{{ t }}">{{ t }}</option>
+                {% endfor %}
+            </select>
+            <div class="modal__actions">
+                <button class="btn btn--ghost" onclick="closeModal()">Cancel</button>
+                <button id="saveBtn" class="btn btn--primary" onclick="saveProblem()">Save to Dashboard</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let lastReview = null;   // normalized review dict from /review/
+    let lastInput = null;    // { name, statement, solution, difficulty }
+
+    function logLine(html) {
+        document.getElementById('logBody').innerHTML += `<div class="log-line">${html}</div>`;
+    }
+
+    async function submitCode() {
+        const name = document.getElementById('probName').value.trim();
+        const statement = document.getElementById('probStatement').value.trim();
+        const solution = document.getElementById('probSolution').value.trim();
+        const difficulty = document.getElementById('difficulty').value;
+
+        if (!name || !statement || !solution) {
+            alert("Please fill in the problem name, statement, and your solution.");
+            return;
+        }
+
+        const btn = document.getElementById('reviewBtn');
+        const log = document.getElementById('loadingLog');
+        const grid = document.getElementById('resultsGrid');
+        const verdict = document.getElementById('verdict');
+        const logBody = document.getElementById('logBody');
+        const status = document.getElementById('sysStatus');
+
+        btn.disabled = true;
+        btn.innerText = "Reviewing...";
+        grid.style.display = 'none';
+        verdict.style.display = 'none';
+        log.style.display = 'block';
+        logBody.innerHTML = '';
+        status.innerText = "Reviewing...";
+
+        const bootSequence = [
+            "<span class='log-sys'>[REQ]</span> Sending problem and solution to the reviewer...",
+            "<span class='log-ok'>[OK]</span> Connected to Qwen2.5-Coder-32B.",
+            "<span class='log-sys'>[LLM]</span> Checking the solution against the problem...",
+            "<span class='log-sys'>[LLM]</span> Estimating time and space complexity...",
+            "<span class='log-ok'>[OK]</span> Scoring correctness, efficiency, and clarity..."
+        ];
+        let i = 0;
+        const logInterval = setInterval(() => {
+            if (i < bootSequence.length) { logLine(bootSequence[i]); i++; }
+        }, 600);
+
+        lastInput = { name, statement, solution, difficulty };
+
+        try {
+            const response = await fetch("{% url 'reviewer:review' %}", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': CSRFTOKEN },
+                body: JSON.stringify(lastInput)
+            });
+            const data = await response.json();
+            clearInterval(logInterval);
+
+            if (!response.ok) {
+                throw new Error(data.detail || `Server returned ${response.status}`);
+            }
+            lastReview = data;
+
+            // Result cards
+            document.getElementById('resScore').innerHTML = `${data.score}<span style="font-size:0.4em;opacity:0.5">/10</span>`;
+            document.getElementById('resTime').innerText = data.complexity?.time ?? 'O(?)';
+            document.getElementById('resSpace').innerText = data.complexity?.space ?? 'O(?)';
+            document.getElementById('resSummary').innerText = data.summary || '(no summary)';
+            document.getElementById('resIssues').innerHTML = (data.issues && data.issues.length)
+                ? data.issues.map(x => `<li>${escapeHtml(x)}</li>`).join('')
+                : `<li><span class="log-ok">No major issues detected.</span></li>`;
+            document.getElementById('resSuggestions').innerHTML = (data.suggestions || [])
+                .map(x => `<li>${escapeHtml(x)}</li>`).join('');
+
+            // Verdict
+            const vEl = document.getElementById('verdict');
+            vEl.className = 'verdict ' + (data.solved ? 'verdict--solved' : 'verdict--unsolved');
+            document.getElementById('verdictLabel').innerText = data.solved ? '✓ Solved' : '✗ Not Solved';
+            document.getElementById('verdictHint').innerText = data.solved
+                ? 'Correct solution. Save it to your dashboard below.'
+                : 'This solution does not fully solve the problem yet — see the issues, fix, and resubmit.';
+
+            logLine(`<span class='log-ok'>[OK]</span> Review complete. Rendering results.`);
+            setTimeout(() => {
+                log.style.display = 'none';
+                vEl.style.display = 'flex';
+                grid.style.display = 'grid';
+                status.innerText = data.solved ? "Solved" : "Not Solved";
+                if (data.solved) openModal(data.topic);
+            }, 700);
+
+        } catch (error) {
+            clearInterval(logInterval);
+            logLine(`<span style="color:var(--safety)">[ERR] Review failed: ${escapeHtml(error.message)}</span>`);
+            status.innerText = "Review Failed";
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "Rate My Code";
+        }
+    }
+
+    function openModal(suggestedTopic) {
+        const sel = document.getElementById('topicSelect');
+        if (suggestedTopic) {
+            for (const opt of sel.options) {
+                if (opt.value === suggestedTopic) { opt.selected = true; break; }
+            }
+        }
+        document.getElementById('topicModal').classList.add('open');
+    }
+    function closeModal() {
+        document.getElementById('topicModal').classList.remove('open');
+    }
+
+    async function saveProblem() {
+        if (!lastReview || !lastInput) return;
+        const saveBtn = document.getElementById('saveBtn');
+        saveBtn.disabled = true;
+        saveBtn.innerText = "Saving...";
+        try {
+            const payload = {
+                ...lastInput,
+                topic: document.getElementById('topicSelect').value,
+                score: lastReview.score,
+                complexity: lastReview.complexity,
+                summary: lastReview.summary,
+            };
+            const response = await fetch("{% url 'reviewer:save' %}", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': CSRFTOKEN },
+                body: JSON.stringify(payload)
+            });
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.detail || `Server returned ${response.status}`);
+            closeModal();
+            const verb = data.created ? 'Saved' : 'Updated';
+            document.getElementById('verdictHint').innerHTML =
+                `${verb} under <strong>${escapeHtml(data.topic)}</strong>. ` +
+                `<a href="{% url 'reviewer:dashboard' %}" style="text-decoration:underline;">View dashboard →</a>`;
+        } catch (error) {
+            alert("Could not save: " + error.message);
+        } finally {
+            saveBtn.disabled = false;
+            saveBtn.innerText = "Save to Dashboard";
+        }
+    }
+
+    function escapeHtml(s) {
+        return String(s).replace(/[&<>"']/g, c => (
+            { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+        ));
+    }
+</script>
+{% endblock %}

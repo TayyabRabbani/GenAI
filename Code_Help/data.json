@@ -1,0 +1,920 @@
+[
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 2,
+  "fields": {
+    "name": "Check if Array Is Sorted and Rotated",
+    "statement": "Given an array nums, return true if the array was originally sorted in non-decreasing order, then rotated some number of positions (including zero). Otherwise, return false.\n\nThere may be duplicates in the original array.\n\nNote: An array A rotated by x positions results in an array B of the same length such that B[i] == A[(i+x) % A.length] for every valid index i.",
+    "solution": "class Solution:\n    def check(self, arr: List[int]) -> bool:\n        \n        n = len(arr)\n        count = 0\n        for i in range(n):\n            if arr[i] > arr[(i + 1) % n]:\n                count += 1\n        return count <= 1",
+    "difficulty": "Easy",
+    "topic": "Arrays",
+    "score": 8.0,
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
+    "summary": "The solution correctly identifies if an array is sorted and rotated by counting decreasing transitions. It handles all edge cases including arrays with duplicates and zero rotation.",
+    "statement_sha": "42fd73491fa89c32fc7aa5613c8fc0b12b5e7ff3",
+    "solved_at": "2026-06-19T13:45:45.892Z",
+    "updated_at": "2026-06-19T13:45:45.892Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 3,
+  "fields": {
+    "name": "Remove Duplicates from Sorted Array",
+    "statement": "Given an integer array nums sorted in non-decreasing order, remove the duplicates in-place such that each unique element appears only once. The relative order of the elements should be kept the same.\n\nConsider the number of unique elements in nums to be k​​​​​​​​​​​​​​. After removing duplicates, return the number of unique elements k.\n\nThe first k elements of nums should contain the unique numbers in sorted order. The remaining elements beyond index k - 1 can be ignored.",
+    "solution": "class Solution:\n   def removeDuplicates(self, nums: List[int]) -> int:\n        uniq = {}\n        for i in nums:\n            uniq[i] = uniq.get(i, 0) + 1\n        i = 0\n        for key in uniq:\n            nums[i] = key\n            i += 1\n\n        return i",
+    "difficulty": "Easy",
+    "topic": "Arrays",
+    "score": 6.0,
+    "time_complexity": "O(n)",
+    "space_complexity": "O(n)",
+    "summary": "The solution correctly removes duplicates by using a hash map to count occurrences and then overwriting the array with unique values. It returns the count of unique elements as required.",
+    "statement_sha": "2b0f1618ea69783b14c83321fc9336774c96c0da",
+    "solved_at": "2026-06-19T13:46:50.769Z",
+    "updated_at": "2026-06-19T13:46:50.769Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 4,
+  "fields": {
+    "name": "Rotate Array",
+    "statement": "Given an integer array nums, rotate the array to the right by k steps, where k is non-negative.",
+    "solution": "class Solution:\n    def rotate(self, nums: List[int], k: int) -> None:\n        \"\"\"\n        Do not return anything, modify nums in-place instead.\n        \"\"\"\n        ans = nums[:]\n        n = len(nums)\n        j = k \n        i = 0\n        while i < n:\n            nums[(j%n)] = ans[i]\n            i+=1\n            j+=1\n\n        return nums",
+    "difficulty": "Medium",
+    "topic": "Arrays",
+    "score": 6.0,
+    "time_complexity": "O(n)",
+    "space_complexity": "O(n)",
+    "summary": "The solution correctly rotates the array in-place using an auxiliary array. It handles the rotation by mapping elements from the original array to their new positions based on k steps. The approach is logically sound and works for all valid inputs.",
+    "statement_sha": "5419f8b1b16849bff92f2faa7a5605242b9f901e",
+    "solved_at": "2026-06-19T13:47:34.016Z",
+    "updated_at": "2026-06-19T13:47:34.016Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 6,
+  "fields": {
+    "name": "Move Zeroes",
+    "statement": "Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements.\n\nNote that you must do this in-place without making a copy of the array.",
+    "solution": "class Solution:\n    def moveZeroes(self, arr: List[int]) -> None:\n        non_zero = 0\n\n        for i in range(len(arr)):\n            if arr[i] != 0:\n                arr[non_zero], arr[i] = arr[i], arr[non_zero]\n                non_zero += 1",
+    "difficulty": "Easy",
+    "topic": "Arrays",
+    "score": 8.0,
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
+    "summary": "The solution uses a two-pointer technique to efficiently move zeros to the end while preserving the relative order of non-zero elements. It correctly modifies the array in-place with a single pass.",
+    "statement_sha": "4aaad274623b41dc83f8025007c14a7890a77056",
+    "solved_at": "2026-06-19T13:57:52.819Z",
+    "updated_at": "2026-06-19T13:57:52.819Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 7,
+  "fields": {
+    "name": "Max Consecutive Ones",
+    "statement": "Given a binary array nums, return the maximum number of consecutive 1's in the array.",
+    "solution": "class Solution:\n    def findMaxConsecutiveOnes(self, nums: List[int]) -> int:\n        count=0\n        ans=0\n        for i in nums:\n            if i == 1:\n                count+=1\n                ans= max(ans,count)\n            else:\n                count=0\n        return ans",
+    "difficulty": "Easy",
+    "topic": "Arrays",
+    "score": 8.0,
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
+    "summary": "The solution correctly tracks consecutive 1's by maintaining a running count and updating the maximum seen so far. It handles all edge cases including empty arrays and arrays with no 1's.",
+    "statement_sha": "e5065f524b02c43a3fa08a5a179295bd6fa5d410",
+    "solved_at": "2026-06-19T13:58:38.959Z",
+    "updated_at": "2026-06-19T13:58:38.959Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 8,
+  "fields": {
+    "name": "Single Number",
+    "statement": "Given a non-empty array of integers nums, every element appears twice except for one. Find that single one.\n\nYou must implement a solution with a linear runtime complexity and use only constant extra space.",
+    "solution": "class Solution:\n    def singleNumber(self, nums: List[int]) -> int:\n        ans = 0\n        for num in nums:\n            ans ^= num\n        return ans",
+    "difficulty": "Easy",
+    "topic": "Arrays",
+    "score": 9.0,
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
+    "summary": "The solution correctly uses XOR operation to find the unique number. XORing all elements cancels out duplicates because a ^ a = 0 and a ^ 0 = a. This meets both time and space requirements.",
+    "statement_sha": "016ffee12361499a0929fef83d97ce94db42dd4b",
+    "solved_at": "2026-06-19T13:59:18.591Z",
+    "updated_at": "2026-06-19T13:59:18.591Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 9,
+  "fields": {
+    "name": "Two Sum",
+    "statement": "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.\n\nYou may assume that each input would have exactly one solution, and you may not use the same element twice.\n\nYou can return the answer in any order.",
+    "solution": "class Solution:\n    def twoSum(self, nums: List[int], target: int) -> List[int]:\n        map = {}\n        for i,num in enumerate(nums):\n            if (target-num) in map:\n                return (i,map[target-num])\n            map[num]=i",
+    "difficulty": "Easy",
+    "topic": "Arrays",
+    "score": 8.0,
+    "time_complexity": "O(n)",
+    "space_complexity": "O(n)",
+    "summary": "The solution uses a hash map to store previously seen values and their indices, allowing for O(1) lookup to find the complement. It correctly handles the problem constraints and returns valid indices.",
+    "statement_sha": "d8e77d4fd44421469c4514518c0a92ba83711d70",
+    "solved_at": "2026-06-19T14:00:18.126Z",
+    "updated_at": "2026-06-19T14:00:18.126Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 10,
+  "fields": {
+    "name": "Sort Colors",
+    "statement": "Given an array nums with n objects colored red, white, or blue, sort them in-place so that objects of the same color are adjacent, with the colors in the order red, white, and blue.\n\nWe will use the integers 0, 1, and 2 to represent the color red, white, and blue, respectively.\n\nYou must solve this problem without using the library's sort function.",
+    "solution": "class Solution:\n    def sortColors(self, nums: List[int]) -> None:\n        \"\"\"\n        Do not return anything, modify nums in-place instead.\n        \"\"\"\n        low = 0\n        mid=0\n        high = len(nums)-1\n        while mid<=high:\n            if nums[mid]==0:\n                nums[mid],nums[low]=nums[low],nums[mid]\n                mid+=1\n                low+=1\n            elif nums[mid]==1:\n                mid+=1\n            elif nums[mid]==2:\n                nums[high],nums[mid]=nums[mid],nums[high]\n                high-=1",
+    "difficulty": "Medium",
+    "topic": "Arrays",
+    "score": 8.0,
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
+    "summary": "The solution implements Dutch National Flag algorithm using three pointers to sort colors in one pass. It correctly handles all cases and maintains in-place sorting.",
+    "statement_sha": "101d15be8613200e5e324691fc67cdfa545b4e6c",
+    "solved_at": "2026-06-19T14:01:45.862Z",
+    "updated_at": "2026-06-19T14:01:45.862Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 11,
+  "fields": {
+    "name": "Majority Element",
+    "statement": "Given an array nums of size n, return the majority element.\n\nThe majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array.",
+    "solution": "class Solution:\n    def majorityElement(self, nums: List[int]) -> int:\n        majority = (len(nums) // 2)\n        freq = {}\n        for i in range(len(nums)):\n            freq[nums[i]] = freq.get(nums[i],0) + 1\n            if freq[nums[i]] > majority:\n                return nums[i]",
+    "difficulty": "Easy",
+    "topic": "Arrays",
+    "score": 8.0,
+    "time_complexity": "O(n)",
+    "space_complexity": "O(n)",
+    "summary": "The solution uses a hash map to track frequencies and returns the first element that exceeds the majority threshold. It correctly handles the problem constraints and returns the majority element.",
+    "statement_sha": "7ab5e69734002730e7d53a84becd7c317130327d",
+    "solved_at": "2026-06-19T14:04:23.954Z",
+    "updated_at": "2026-06-19T14:04:23.954Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 12,
+  "fields": {
+    "name": "Maximum Subarray",
+    "statement": "Given an integer array nums, find the subarray with the largest sum, and return its sum.",
+    "solution": "class Solution:\n    def maxSubArray(self, arr: List[int]) -> int:\n        sum=0\n        ans = float(\"-inf\")\n        for i in range(len(arr)):\n            sum+=arr[i]\n            ans=max(sum,ans)\n            if sum<0:\n                sum=0\n        return ans",
+    "difficulty": "Medium",
+    "topic": "Arrays",
+    "score": 8.0,
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
+    "summary": "The solution implements Kadane's algorithm correctly to find the maximum subarray sum. It maintains a running sum and resets it when negative, tracking the maximum seen so far.",
+    "statement_sha": "f90400593ed42bd5e5c08ef1d205d108659d2ff4",
+    "solved_at": "2026-06-19T14:05:31.157Z",
+    "updated_at": "2026-06-19T14:05:31.157Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 13,
+  "fields": {
+    "name": "Best Time to Buy and Sell Stock",
+    "statement": "You are given an array prices where prices[i] is the price of a given stock on the ith day.\n\nYou want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.\n\nReturn the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.",
+    "solution": "class Solution:\n    def maxProfit(self, prices: List[int]) -> int:\n        min_price = float('inf')\n        max_profit = 0\n\n        for price in prices:\n            min_price = min(min_price, price)\n            max_profit = max(max_profit, price - min_price)\n\n        return max_profit",
+    "difficulty": "Easy",
+    "topic": "Arrays",
+    "score": 9.0,
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
+    "summary": "The solution correctly implements a single-pass algorithm to find the maximum profit by tracking the minimum price seen so far and computing potential profit at each step. It handles all edge cases including no profit scenarios.",
+    "statement_sha": "ceeee84aab22a316298f0815c2af905749d87810",
+    "solved_at": "2026-06-19T14:06:01.352Z",
+    "updated_at": "2026-06-19T14:06:01.352Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 14,
+  "fields": {
+    "name": "Rearrange Array Elements by Sign",
+    "statement": "You are given a 0-indexed integer array nums of even length consisting of an equal number of positive and negative integers.\n\nYou should return the array of nums such that the array follows the given conditions:\n\nEvery consecutive pair of integers have opposite signs.\nFor all integers with the same sign, the order in which they were present in nums is preserved.\nThe rearranged array begins with a positive integer.\nReturn the modified array after rearranging the elements to satisfy the aforementioned conditions.",
+    "solution": "class Solution:\n    def rearrangeArray(self, nums: List[int]) -> List[int]:\n        pos= 0\n        neg=1\n        ans=[0]*len(nums)\n        for i in range(len(nums)):\n            if nums[i]>0:\n                ans[pos]=nums[i]\n                pos+=2\n            if nums[i]<0:\n                ans[neg]=nums[i]\n                neg+=2\n                \n        return ans",
+    "difficulty": "Medium",
+    "topic": "Arrays",
+    "score": 8.0,
+    "time_complexity": "O(n)",
+    "space_complexity": "O(n)",
+    "summary": "The solution correctly rearranges the array by placing positive numbers at even indices and negative numbers at odd indices while preserving their relative order. It meets all problem constraints.",
+    "statement_sha": "c6d82b27fce2904efbd37b88fc43f86e1203ef21",
+    "solved_at": "2026-06-19T14:06:31.058Z",
+    "updated_at": "2026-06-19T14:06:31.058Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 15,
+  "fields": {
+    "name": "Next Permutation",
+    "statement": "A permutation of an array of integers is an arrangement of its members into a sequence or linear order.\n\nFor example, for arr = [1,2,3], the following are all the permutations of arr: [1,2,3], [1,3,2], [2, 1, 3], [2, 3, 1], [3,1,2], [3,2,1].\nThe next permutation of an array of integers is the next lexicographically greater permutation of its integer. More formally, if all the permutations of the array are sorted in one container according to their lexicographical order, then the next permutation of that array is the permutation that follows it in the sorted container. If such arrangement is not possible, the array must be rearranged as the lowest possible order (i.e., sorted in ascending order).\n\nFor example, the next permutation of arr = [1,2,3] is [1,3,2].\nSimilarly, the next permutation of arr = [2,3,1] is [3,1,2].\nWhile the next permutation of arr = [3,2,1] is [1,2,3] because [3,2,1] does not have a lexicographical larger rearrangement.\nGiven an array of integers nums, find the next permutation of nums.\n\nThe replacement must be in place and use only constant extra memory.",
+    "solution": "class Solution:\n    def nextPermutation(self, nums: List[int]) -> None:\n        \"\"\"\n        Do not return anything, modify nums in-place instead.\n        \"\"\"\n        #find the breakpoint\n        n = len(nums)\n        ind= -1\n        for i in range(n-2,-1,-1):\n            if nums[i] < nums[i+1]:\n                ind = i\n                break\n\n        if ind ==-1:\n            nums.reverse()\n            return nums\n\n        #find the next greater element from right of the breakpoint to swap it with\n        for i in range(n-1,-1,-1):\n            if nums[i] > nums[ind]:\n                nums[i] , nums[ind] = nums[ind] , nums[i]\n                break\n        \n        #reverse the right half of the breakpoint\n        nums[ind+1:] = reversed(nums[ind+1:])\n        return nums",
+    "difficulty": "Medium",
+    "topic": "Arrays",
+    "score": 8.0,
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
+    "summary": "The solution correctly implements the standard algorithm for finding the next lexicographical permutation. It identifies the breakpoint, finds the next greater element to swap, and reverses the suffix to get the result.",
+    "statement_sha": "8c6fcae6d05827298d752d573054cbc2aed439f3",
+    "solved_at": "2026-06-19T14:07:05.590Z",
+    "updated_at": "2026-06-19T14:07:05.590Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 16,
+  "fields": {
+    "name": "Set Matrix Zeroes",
+    "statement": "Given an m x n integer matrix matrix, if an element is 0, set its entire row and column to 0's.\n\nYou must do it in place.",
+    "solution": "class Solution:\n    def setZeroes(self, matrix: List[List[int]]) -> None:\n        \"\"\"\n        Do not return anything, modify matrix in-place instead.\n        \"\"\"\n        \n        n = len(matrix)\n        m = len(matrix[0])\n        row = [0] * n  # row array\n        col = [0] * m  # col array\n\n        # Traverse the matrix:\n        for i in range(n):\n            for j in range(m):\n                if matrix[i][j] == 0:\n                    row[i] = 1\n                    col[j] = 1\n\n    \n        for i in range(n):\n            for j in range(m):\n                if row[i] or col[j]:\n                    matrix[i][j] = 0",
+    "difficulty": "Medium",
+    "topic": "Arrays",
+    "score": 7.0,
+    "time_complexity": "O(m*n)",
+    "space_complexity": "O(m+n)",
+    "summary": "The solution correctly identifies all zero elements and marks their rows and columns for zeroing. It then updates the matrix in a second pass. The approach is clear but uses additional space for tracking rows and columns.",
+    "statement_sha": "cc7125ce3a632974427f126b0e2d1e4e1121c7f3",
+    "solved_at": "2026-06-19T14:07:37.565Z",
+    "updated_at": "2026-06-19T14:07:37.565Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 17,
+  "fields": {
+    "name": "Rotate Image",
+    "statement": "You are given an n x n 2D matrix representing an image, rotate the image by 90 degrees (clockwise).\n\nYou have to rotate the image in-place, which means you have to modify the input 2D matrix directly. DO NOT allocate another 2D matrix and do the rotation.",
+    "solution": "class Solution:\n    def rotate(self, matrix: List[List[int]]) -> None:\n        \"\"\"\n        Do not return anything, modify matrix in-place instead.\n        \"\"\"\n        n = len(matrix)\n        # transposing the matrix\n        for i in range(n):\n            for j in range(i):\n                matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]\n        # reversing each row of the matrix\n        for i in range(n):\n            matrix[i].reverse()",
+    "difficulty": "Medium",
+    "topic": "Arrays",
+    "score": 8.0,
+    "time_complexity": "O(n^2)",
+    "space_complexity": "O(1)",
+    "summary": "The solution correctly rotates the matrix by 90 degrees clockwise using transpose and row reversal operations. It modifies the matrix in-place with optimal space complexity.",
+    "statement_sha": "d60014649ec7db3bd9856e574c1881fba8493f17",
+    "solved_at": "2026-06-19T14:08:02.471Z",
+    "updated_at": "2026-06-19T14:08:02.471Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 18,
+  "fields": {
+    "name": "Spiral Matrix",
+    "statement": "Given an m x n matrix, return all elements of the matrix in spiral order.",
+    "solution": "class Solution:\n    def spiralOrder(self, mat: List[List[int]]) -> List[int]:\n        # Define ans array to store the result.\n        ans = []\n    \n        n = len(mat) # no. of rows\n        m = len(mat[0]) # no. of columns\n    \n        # Initialize the pointers reqd for traversal.\n        top = 0\n        left = 0\n        bottom = n - 1\n        right = m - 1\n\n        # Loop until all elements are not traversed.\n        while (top <= bottom and left <= right):\n            # For moving left to right\n            for i in range(left, right + 1):\n                ans.append(mat[top][i])\n\n            top += 1\n\n            # For moving top to bottom.\n            for i in range(top, bottom + 1):\n                ans.append(mat[i][right])\n\n            right -= 1\n\n            # For moving right to left.\n            if (top <= bottom):\n                for i in range(right, left - 1, -1):\n                    ans.append(mat[bottom][i])\n\n                bottom -= 1\n\n            # For moving bottom to top.\n            if (left <= right):\n                for i in range(bottom, top - 1, -1):\n                    ans.append(mat[i][left])\n\n                left += 1\n\n        return ans",
+    "difficulty": "Hard",
+    "topic": "Arrays",
+    "score": 8.0,
+    "time_complexity": "O(m*n)",
+    "space_complexity": "O(1)",
+    "summary": "The solution correctly implements a spiral traversal by maintaining four boundaries (top, bottom, left, right) and systematically moving along the edges. It handles edge cases like single row/column matrices properly.",
+    "statement_sha": "3e8e0d9b0d29bf324ca33bb9a652535772b7e4ab",
+    "solved_at": "2026-06-19T14:08:32.841Z",
+    "updated_at": "2026-06-19T14:08:32.841Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 19,
+  "fields": {
+    "name": "Subarray Sum Equals K",
+    "statement": "Given an array of integers nums and an integer k, return the total number of subarrays whose sum equals to k.\n\nA subarray is a contiguous non-empty sequence of elements within an array.",
+    "solution": "from collections import defaultdict\nclass Solution:\n    def subarraySum(self, arr: List[int], k: int) -> int:\n        n = len(arr) # size of the given array.\n        mpp = defaultdict(int)\n        preSum = 0\n        cnt = 0\n\n        mpp[0] = 1 \n        for i in range(n):\n     \n            preSum += arr[i]\n\n            # Calculate x-k:\n            remove = preSum - k\n\n            cnt += mpp[remove]\n\n            # Update the count of prefix sum\n            # in the map.\n            mpp[preSum] += 1\n\n        return cnt",
+    "difficulty": "Medium",
+    "topic": "Arrays",
+    "score": 8.0,
+    "time_complexity": "O(n)",
+    "space_complexity": "O(n)",
+    "summary": "The solution uses a prefix sum approach with a hash map to efficiently count subarrays that sum to k. It correctly handles all cases including negative numbers and works in linear time.",
+    "statement_sha": "03a51c8709e74be12c66fce42fac6a779672931c",
+    "solved_at": "2026-06-19T14:16:20.340Z",
+    "updated_at": "2026-06-19T14:16:20.340Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 20,
+  "fields": {
+    "name": "Pascal's Triangle",
+    "statement": "Given an integer numRows, return the first numRows of Pascal's triangle.\n\nIn Pascal's triangle, each number is the sum of the two numbers directly above it as shown:\n[[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]]",
+    "solution": "def generateRow(row):\n    ans = 1\n    ansRow = [1]  # inserting the 1st element\n\n    # calculate the rest of the elements:\n    for col in range(1, row):\n        ans *= (row - col)\n        ans //= col\n        ansRow.append(ans)\n    return ansRow\n\nclass Solution:\n    def generate(self, numRows: int) -> List[List[int]]:\n        ans = []\n\n        # store the entire Pascal's triangle:\n        for row in range(1, numRows + 1):\n            ans.append(generateRow(row))\n        return ans",
+    "difficulty": "Easy",
+    "topic": "Arrays",
+    "score": 7.0,
+    "time_complexity": "O(numRows^2)",
+    "space_complexity": "O(numRows^2)",
+    "summary": "The solution correctly generates Pascal's triangle by computing each row using the combination formula. It handles the base case and builds rows iteratively. The approach is mathematically sound and produces the expected output.",
+    "statement_sha": "b82a755a3f02d4924b0deed7c9f738e0f1d890db",
+    "solved_at": "2026-06-19T14:18:20.835Z",
+    "updated_at": "2026-06-19T14:18:20.835Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 21,
+  "fields": {
+    "name": "Majority Element II",
+    "statement": "Given an integer array of size n, find all elements that appear more than ⌊ n/3 ⌋ times.",
+    "solution": "from typing import List\nfrom collections import Counter\n\nclass Solution:\n    def majorityElement(self, arr: List[int]) -> List[int]:\n        n = len(arr)\n        counter = Counter(arr)\n\n        res = []\n        for num, count in counter.items():\n            if count > n // 3:\n                res.append(num)\n\n        return res",
+    "difficulty": "Medium",
+    "topic": "Arrays",
+    "score": 7.0,
+    "time_complexity": "O(n)",
+    "space_complexity": "O(n)",
+    "summary": "The solution uses a hash map to count element frequencies and filters those appearing more than ⌊n/3⌋ times. It correctly handles the problem constraints and produces the right output.",
+    "statement_sha": "12282a28f74d17b5207af7ac9aa678cca51c6432",
+    "solved_at": "2026-06-19T14:19:23.929Z",
+    "updated_at": "2026-06-19T14:19:23.929Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 22,
+  "fields": {
+    "name": "3Sum",
+    "statement": "Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.\n\nNotice that the solution set must not contain duplicate triplets.",
+    "solution": "class Solution:\n    def threeSum(self, nums: List[int]) -> List[List[int]]:\n        nums.sort()\n        n = len(nums)\n        ans = []\n\n        for i in range(n):\n            if i > 0 and nums[i] == nums[i - 1]:\n                continue  # skip duplicate i\n\n            left, right = i + 1, n - 1\n\n            while left < right:\n                total = nums[i] + nums[left] + nums[right]\n\n                if total == 0:\n                    ans.append([nums[i], nums[left], nums[right]])\n\n                    left += 1\n                    right -= 1\n\n                    while left < right and nums[left] == nums[left - 1]:\n                        left += 1\n                    while left < right and nums[right] == nums[right + 1]:\n                        right -= 1\n\n                elif total < 0:\n                    left += 1\n                else:\n                    right -= 1\n\n        return ans\n\nthe duplicating is not wrong",
+    "difficulty": "Medium",
+    "topic": "Arrays",
+    "score": 7.0,
+    "time_complexity": "O(n^2)",
+    "space_complexity": "O(1)",
+    "summary": "The solution uses a two-pointer technique after sorting the array to find all unique triplets that sum to zero. It correctly handles duplicates by skipping over repeated elements during iteration and inner loops.",
+    "statement_sha": "2187935c393275b000e56538275b3313740781c3",
+    "solved_at": "2026-06-19T14:23:31.922Z",
+    "updated_at": "2026-06-19T14:23:31.922Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 23,
+  "fields": {
+    "name": "4Sum",
+    "statement": "Given an array nums of n integers, return an array of all the unique quadruplets [nums[a], nums[b], nums[c], nums[d]] such that:\n\n0 <= a, b, c, d < n\na, b, c, and d are distinct.\nnums[a] + nums[b] + nums[c] + nums[d] == target\nYou may return the answer in any order.",
+    "solution": "class Solution:\n    def fourSum(self, nums: List[int], target: int) -> List[List[int]]:\n        nums.sort()\n        n = len(nums)\n        res = []\n\n        for i in range(n - 3):\n            if i > 0 and nums[i] == nums[i - 1]:\n                continue\n\n            for j in range(i + 1, n - 2):\n                if j > i + 1 and nums[j] == nums[j - 1]:\n                    continue\n\n                l, r = j + 1, n - 1\n\n                while l < r:\n                    s = nums[i] + nums[j] + nums[l] + nums[r]\n\n                    if s == target:\n                        res.append([nums[i], nums[j], nums[l], nums[r]])\n                        l += 1\n                        r -= 1\n\n                        while l < r and nums[l] == nums[l - 1]:\n                            l += 1\n                        while l < r and nums[r] == nums[r + 1]:\n                            r -= 1\n\n                    elif s < target:\n                        l += 1\n                    else:\n                        r -= 1\n\n        return res",
+    "difficulty": "Medium",
+    "topic": "Arrays",
+    "score": 7.0,
+    "time_complexity": "O(n^3)",
+    "space_complexity": "O(1)",
+    "summary": "The solution uses a four-pointer approach with sorting to find all unique quadruplets that sum to target. It correctly handles duplicates and explores all combinations efficiently.",
+    "statement_sha": "07f076c1da0382012232aa8e2aa4d89cb7c7e6f1",
+    "solved_at": "2026-06-19T14:24:21.388Z",
+    "updated_at": "2026-06-19T14:24:21.388Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 24,
+  "fields": {
+    "name": "Merge Intervals",
+    "statement": "Given an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.",
+    "solution": "class Solution:\n    def merge(self, arr: List[List[int]]) -> List[List[int]]:\n        arr.sort()\n        \n        ans = []\n        start_ans, end_ans = arr[0]\n\n        for i in range(1, len(arr)):\n            start, end = arr[i]\n\n            if start > end_ans:   # no overlap\n                ans.append([start_ans, end_ans])\n                start_ans, end_ans = start, end\n            else:                # overlap\n                end_ans = max(end_ans, end)\n\n        ans.append([start_ans, end_ans])\n        return ans",
+    "difficulty": "Medium",
+    "topic": "Arrays",
+    "score": 7.0,
+    "time_complexity": "O(n log n)",
+    "space_complexity": "O(1)",
+    "summary": "The solution correctly merges overlapping intervals by first sorting the array and then iterating through it once. It maintains a running interval and updates it when overlaps occur. The approach is sound and handles the core logic properly.",
+    "statement_sha": "b3d3c94fceca1f80fe7e59d3a5ddddcc0edc5749",
+    "solved_at": "2026-06-19T14:24:56.158Z",
+    "updated_at": "2026-06-19T14:24:56.158Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 25,
+  "fields": {
+    "name": "Maximum Product Subarray",
+    "statement": "Given an integer array nums, find a subarray that has the largest product, and return the product.\n\nThe test cases are generated so that the answer will fit in a 32-bit integer.\n\nNote that the product of an array with a single element is the value of that element.",
+    "solution": "class Solution:\n    def maxProduct(self, nums: List[int]) -> int:\n        n= len(nums)\n        pre=1\n        suff=1\n        ans=float(\"-inf\")\n        for i in range(n):\n            if pre==0:\n                pre=1\n            if suff==0:\n                suff=1\n            pre*=nums[i]\n            suff*=nums[n-i-1]\n            ans=max(ans,max(pre,suff))\n        return ans",
+    "difficulty": "Medium",
+    "topic": "Arrays",
+    "score": 8.0,
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
+    "summary": "The solution uses a two-pointer approach to track prefix and suffix products simultaneously, updating the maximum product found. It correctly handles negative numbers by resetting products when they hit zero.",
+    "statement_sha": "89b49707cf3c085e1e545537035a5dd8999ac1a5",
+    "solved_at": "2026-06-19T14:25:29.900Z",
+    "updated_at": "2026-06-19T14:25:29.900Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 26,
+  "fields": {
+    "name": "Binary Search",
+    "statement": "Given an array of integers nums which is sorted in ascending order, and an integer target, write a function to search target in nums. If target exists, then return its index. Otherwise, return -1.\n\nYou must write an algorithm with O(log n) runtime complexity.",
+    "solution": "class Solution:\n    def search(self, nums: List[int], target: int) -> int:\n        low= 0\n        high = len(nums)-1\n        \n        while low <= high:\n            mid = low + ((high-low)//2)\n            if nums[mid] == target:\n                return mid\n            elif nums[mid]<target:\n                low=mid+1\n            else:\n                high=mid-1\n        \n        return -1",
+    "difficulty": "Easy",
+    "topic": "Binary Search",
+    "score": 9.0,
+    "time_complexity": "O(log n)",
+    "space_complexity": "O(1)",
+    "summary": "The solution implements iterative binary search correctly with proper boundary updates and handles all edge cases. The use of `low + ((high-low)//2)` prevents integer overflow and ensures correct midpoint calculation.",
+    "statement_sha": "770cf3263357f8a5495d23006f4476c5182be59b",
+    "solved_at": "2026-06-19T14:26:14.908Z",
+    "updated_at": "2026-06-19T14:26:14.908Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 27,
+  "fields": {
+    "name": "Search Insert Position",
+    "statement": "Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.\n\nYou must write an algorithm with O(log n) runtime complexity.",
+    "solution": "class Solution:\n    def searchInsert(self, nums: List[int], target: int) -> int:\n        low =0\n        high = len(nums)-1\n        index=-1\n        while low<=high:\n            mid = low+(high-low)//2\n            if nums[mid]==target:\n                return mid\n            elif nums[mid]>=target:\n                high =mid-1\n                index=mid\n            else:\n                low=mid+1\n        \n        return index if index!=-1 else len(nums)",
+    "difficulty": "Easy",
+    "topic": "Binary Search",
+    "score": 8.0,
+    "time_complexity": "O(log n)",
+    "space_complexity": "O(1)",
+    "summary": "The solution correctly implements binary search to find the target or determine its insertion position. It handles all edge cases including when the target is smaller than all elements, larger than all elements, or exists in the array.",
+    "statement_sha": "b6765749629cdbc88e8dfa172da06538fbc4f1e0",
+    "solved_at": "2026-06-19T19:18:32.672Z",
+    "updated_at": "2026-06-19T19:18:32.672Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 28,
+  "fields": {
+    "name": "Find First and Last Position of Element in Sorted Array",
+    "statement": "Given an array of integers nums sorted in non-decreasing order, find the starting and ending position of a given target value.\n\nIf target is not found in the array, return [-1, -1].\n\nYou must write an algorithm with O(log n) runtime complexity.",
+    "solution": "class Solution:\n    def searchRange(self, nums: List[int], target: int) -> List[int]:\n        def findFirst():\n            low, high = 0, len(nums) - 1\n            first = -1\n            while low <= high:\n                mid = (low + high) // 2\n                if nums[mid] == target:\n                    first = mid\n                    high = mid - 1  # continue searching left\n                elif nums[mid] < target:\n                    low = mid + 1\n                else:\n                    high = mid - 1\n            return first\n\n        def findLast():\n            low, high = 0, len(nums) - 1\n            last = -1\n            while low <= high:\n                mid = (low + high) // 2\n                if nums[mid] == target:\n                    last = mid\n                    low = mid + 1  # continue searching right\n                elif nums[mid] < target:\n                    low = mid + 1\n                else:\n                    high = mid - 1\n            return last\n\n        first = findFirst()\n        last = findLast()\n        return [first, last] if first != -1 else [-1, -1]",
+    "difficulty": "Medium",
+    "topic": "Binary Search",
+    "score": 8.0,
+    "time_complexity": "O(log n)",
+    "space_complexity": "O(1)",
+    "summary": "The solution correctly implements two binary searches to find the first and last positions of the target element. It handles edge cases like empty arrays and targets not present in the array. The time complexity is optimal at O(log n).",
+    "statement_sha": "27da7be075443357d05bd52e33860f4e633c8d4c",
+    "solved_at": "2026-06-19T19:19:04.306Z",
+    "updated_at": "2026-06-19T19:19:04.306Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 29,
+  "fields": {
+    "name": "Search in Rotated Sorted Array",
+    "statement": "There is an integer array nums sorted in ascending order (with distinct values).\n\nPrior to being passed to your function, nums is possibly left rotated at an unknown index k (1 <= k < nums.length) such that the resulting array is [nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]] (0-indexed). For example, [0,1,2,4,5,6,7] might be left rotated by 3 indices and become [4,5,6,7,0,1,2].\n\nGiven the array nums after the possible rotation and an integer target, return the index of target if it is in nums, or -1 if it is not in nums.\n\nYou must write an algorithm with O(log n) runtime complexity.",
+    "solution": "class Solution:\n    def search(self, arr: List[int], target: int) -> int:\n        low = 0\n        high = len(arr)-1\n        while (low<=high):\n            mid = low + (high-low)//2\n            if arr[mid]==target:\n                return mid\n            elif arr[low]<=arr[mid]:\n                if arr[low]<=target and target<=arr[mid]:\n                    high=mid-1\n                else:\n                    low=mid+1\n            else:\n                if arr[mid]<=target and target<=arr[high]:\n                    low=mid+1\n                else:\n                    high=mid-1\n        return -1",
+    "difficulty": "Medium",
+    "topic": "Binary Search",
+    "score": 8.0,
+    "time_complexity": "O(log n)",
+    "space_complexity": "O(1)",
+    "summary": "The solution correctly implements a modified binary search to find the target in a rotated sorted array. It properly identifies which half of the array is sorted and whether the target lies within that sorted half, ensuring O(log n) time complexity.",
+    "statement_sha": "5580d50327d3fa6047248d9722bfdff894556f7d",
+    "solved_at": "2026-06-19T19:19:31.326Z",
+    "updated_at": "2026-06-19T19:19:31.326Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 30,
+  "fields": {
+    "name": "Search in Rotated Sorted Array II",
+    "statement": "There is an integer array nums sorted in non-decreasing order (not necessarily with distinct values).\n\nBefore being passed to your function, nums is rotated at an unknown pivot index k (0 <= k < nums.length) such that the resulting array is [nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]] (0-indexed). For example, [0,1,2,4,4,4,5,6,6,7] might be rotated at pivot index 5 and become [4,5,6,6,7,0,1,2,4,4].\n\nGiven the array nums after the rotation and an integer target, return true if target is in nums, or false if it is not in nums.\n\nYou must decrease the overall operation steps as much as possible.",
+    "solution": "class Solution:\n    def search(self, arr: List[int], target: int) -> bool:\n        low = 0\n        high = len(arr)-1\n        while (low<=high):\n            mid = low + (high-low)//2\n            if arr[mid]==target:\n                return True\n            elif (arr[low]==arr[mid]==arr[high]):\n                low= low+1\n                high=high-1\n            elif arr[low]<=arr[mid]:\n                if arr[low]<=target and target<=arr[mid]:\n                    high=mid-1\n                else:\n                    low=mid+1\n            else:\n                if arr[mid]<=target and target<=arr[high]:\n                    low=mid+1\n                else:\n                    high=mid-1\n        return False",
+    "difficulty": "Medium",
+    "topic": "Binary Search",
+    "score": 8.0,
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
+    "summary": "The solution correctly implements a modified binary search to handle rotated sorted arrays with duplicates. It efficiently narrows down the search space by identifying which half of the array is properly sorted and whether the target lies within that range.",
+    "statement_sha": "dc63e5b32b15e558e4dfa0c7a41d86646c0fd5e9",
+    "solved_at": "2026-06-19T19:20:11.606Z",
+    "updated_at": "2026-06-19T19:20:11.606Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 31,
+  "fields": {
+    "name": "Single Element in a Sorted Array",
+    "statement": "You are given a sorted array consisting of only integers where every element appears exactly twice, except for one element which appears exactly once.\n\nReturn the single element that appears only once.\n\nYour solution must run in O(log n) time and O(1) space.",
+    "solution": "class Solution:\n    def singleNonDuplicate(self, nums: List[int]) -> int:\n        low= 1\n        high = len(nums)-2\n        if len(nums)==1:\n            return nums[0]\n        if nums[0]!=nums[1]:\n            return nums[0] \n        if nums[-1]!=nums[-2]:\n            return nums[-1]\n        while low<=high:\n            mid=low+(high-low)//2  \n            if nums[mid-1]!=nums[mid] and nums[mid]!=nums[mid+1]:\n                return nums[mid]\n            if mid%2!=0:\n                if nums[mid]==nums[mid-1]:\n                    low=mid+1\n                else:\n                    high=mid-1\n            else:\n                if nums[mid]==nums[mid+1]:\n                    low=mid+1\n                else:\n                    high=mid-1\n\n        return -1",
+    "difficulty": "Medium",
+    "topic": "Binary Search",
+    "score": 7.0,
+    "time_complexity": "O(log n)",
+    "space_complexity": "O(1)",
+    "summary": "The solution uses binary search to find the unique element in O(log n) time and O(1) space. It correctly handles edge cases and uses the property of indices and pairs to determine which half to search next.",
+    "statement_sha": "f5a040b1331ccb8eafc7d58ff97c6a0349e604e6",
+    "solved_at": "2026-06-19T19:21:58.413Z",
+    "updated_at": "2026-06-19T19:21:58.413Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 32,
+  "fields": {
+    "name": "Find Peak Element",
+    "statement": "A peak element is an element that is strictly greater than its neighbors.\n\nGiven a 0-indexed integer array nums, find a peak element, and return its index. If the array contains multiple peaks, return the index to any of the peaks.\n\nYou may imagine that nums[-1] = nums[n] = -∞. In other words, an element is always considered to be strictly greater than a neighbor that is outside the array.\n\nYou must write an algorithm that runs in O(log n) time.",
+    "solution": "class Solution:\n    def findPeakElement(self, nums: List[int]) -> int:\n        n = len(nums)  # Size of the array\n\n        # Edge cases:\n        if n == 1:\n            return 0\n        if nums[0] > nums[1]:\n            return 0\n        if nums[n - 1] > nums[n - 2]:\n            return n - 1\n\n        low = 1\n        high = n - 2\n        while low <= high:\n            mid = (low + high) // 2\n\n            # If nums[mid] is the peak:\n            if nums[mid - 1] < nums[mid] and nums[mid] > nums[mid + 1]:\n                return mid\n\n            # If we are in the left:\n            if nums[mid] > nums[mid - 1]:\n                low = mid + 1\n\n            # If we are in the right:\n            # Or, nums[mid] is a common point:\n            else:\n                high = mid - 1\n\n        # Dummy return statement\n        return -1",
+    "difficulty": "Medium",
+    "topic": "Binary Search",
+    "score": 8.0,
+    "time_complexity": "O(log n)",
+    "space_complexity": "O(1)",
+    "summary": "The solution correctly implements a binary search approach to find a peak element in O(log n) time. It handles edge cases for arrays of size 1 and at the boundaries, then uses binary search to efficiently locate a peak by comparing mid elements with neighbors.",
+    "statement_sha": "7c73b3deafa51c5e2070430896222372bb44293e",
+    "solved_at": "2026-06-19T19:22:23.883Z",
+    "updated_at": "2026-06-19T19:22:23.883Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 33,
+  "fields": {
+    "name": "Middle of the Linked List",
+    "statement": "Given the head of a singly linked list, return the middle node of the linked list.\n\nIf there are two middle nodes, return the second middle node.",
+    "solution": "# Definition for singly-linked list.\n# class ListNode:\n#     def __init__(self, val=0, next=None):\n#         self.val = val\n#         self.next = next\nclass Solution:\n    def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:\n        slow = head\n        fast = head\n        while fast and fast.next:\n            slow = slow.next\n            fast=fast.next.next\n\n        return slow",
+    "difficulty": "Easy",
+    "topic": "Linked List",
+    "score": 8.0,
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
+    "summary": "Uses the classic two-pointer technique (tortoise and hare) to find the middle node. The slow pointer moves one step at a time while the fast pointer moves two steps, ensuring that when fast reaches the end, slow points to the middle. Correctly handles both odd and even length lists.",
+    "statement_sha": "1e509cf72efb442632a2c2d644c9cb30407da595",
+    "solved_at": "2026-06-19T19:24:00.164Z",
+    "updated_at": "2026-06-19T19:24:00.164Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 34,
+  "fields": {
+    "name": "Reverse Linked List",
+    "statement": "Given the head of a singly linked list, reverse the list, and return the reversed list",
+    "solution": "# Definition for singly-linked list.\n# class ListNode:\n#     def __init__(self, val=0, next=None):\n#         self.val = val\n#         self.next = next\nclass Solution:\n    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:\n\n        if head is None or head.next is None:\n            return head\n        \n        new_head = self.reverseList(head.next)\n        front = head.next\n        front.next = head\n        head.next = None\n        return new_head",
+    "difficulty": "Easy",
+    "topic": "Linked List",
+    "score": 8.0,
+    "time_complexity": "O(n)",
+    "space_complexity": "O(n)",
+    "summary": "The solution uses recursive approach to reverse the linked list by recursively reversing the rest of the list and then adjusting pointers. It correctly handles base cases and returns the new head of the reversed list.",
+    "statement_sha": "49e23bfd5bbd56956bd5691cb1d61a7a3730372f",
+    "solved_at": "2026-06-19T19:24:29.188Z",
+    "updated_at": "2026-06-19T19:24:29.188Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 35,
+  "fields": {
+    "name": "Linked List Cycle",
+    "statement": "Given head, the head of a linked list, determine if the linked list has a cycle in it.\n\nThere is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to. Note that pos is not passed as a parameter.\n\nReturn true if there is a cycle in the linked list. Otherwise, return false.",
+    "solution": "# Definition for singly-linked list.\n# class ListNode:\n#     def __init__(self, x):\n#         self.val = x\n#         self.next = None\n\nclass Solution:\n    def hasCycle(self, head: Optional[ListNode]) -> bool:\n        slow = fast = head\n        while fast and fast.next:\n            slow = slow.next\n            fast = fast.next.next\n            if slow == fast:\n                return True\n        return False",
+    "difficulty": "Easy",
+    "topic": "Linked List",
+    "score": 8.0,
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
+    "summary": "Uses Floyd's Cycle Detection algorithm (tortoise and hare) to detect cycles in O(n) time and O(1) space. Correctly handles all edge cases including empty list and single node.",
+    "statement_sha": "57d91332b5bd10c13d9a8b247f8dbba048390382",
+    "solved_at": "2026-06-19T19:24:59.373Z",
+    "updated_at": "2026-06-19T19:24:59.373Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 36,
+  "fields": {
+    "name": "Linked List Cycle II",
+    "statement": "Given the head of a linked list, return the node where the cycle begins. If there is no cycle, return null.\n\nThere is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to (0-indexed). It is -1 if there is no cycle. Note that pos is not passed as a parameter.\n\nDo not modify the linked list.",
+    "solution": "# Definition for singly-linked list.\n# class ListNode:\n#     def __init__(self, x):\n#         self.val = x\n#         self.next = None\n\nclass Solution:\n    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:\n        slow = fast = head\n        while fast and fast.next:\n            slow = slow.next\n            fast = fast.next.next\n            if slow == fast:\n                slow=head\n                while slow!=fast:\n                    fast=fast.next\n                    slow=slow.next\n                return slow",
+    "difficulty": "Medium",
+    "topic": "Linked List",
+    "score": 8.0,
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
+    "summary": "The solution correctly implements Floyd's cycle detection algorithm with a two-pointer approach. It first detects the cycle using slow and fast pointers, then finds the start of the cycle by resetting one pointer to head and moving both at same speed.",
+    "statement_sha": "72f431984e011ee7a1dbdf35637bf96ca9b8709d",
+    "solved_at": "2026-06-19T19:25:33.303Z",
+    "updated_at": "2026-06-19T19:25:33.303Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 37,
+  "fields": {
+    "name": "Palindrome Linked List",
+    "statement": "Given the head of a singly linked list, return true if it is a palindrome or false otherwise",
+    "solution": "# Definition for singly-linked list.\n# class ListNode:\n#     def __init__(self, val=0, next=None):\n#         self.val = val\n#         self.next = next\nclass Solution:\n    def isPalindrome(self, head: Optional[ListNode]) -> bool:\n        vals = []\n        current = head\n        while current:\n            vals.append(current.val)\n            current = current.next\n        return vals == vals[::-1]",
+    "difficulty": "Medium",
+    "topic": "Linked List",
+    "score": 7.0,
+    "time_complexity": "O(n)",
+    "space_complexity": "O(n)",
+    "summary": "The solution traverses the linked list once to collect all values into an array, then checks if the array equals its reverse. This correctly determines if the linked list is a palindrome. The approach is simple but uses O(n) extra space.",
+    "statement_sha": "14b896d3b24db540135f53a1d0e4e7021b99706f",
+    "solved_at": "2026-06-19T19:26:00.437Z",
+    "updated_at": "2026-06-19T19:26:00.437Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 38,
+  "fields": {
+    "name": "Odd Even Linked List",
+    "statement": "Given the head of a singly linked list, group all the nodes with odd indices together followed by the nodes with even indices, and return the reordered list.\n\nThe first node is considered odd, and the second node is even, and so on.\n\nNote that the relative order inside both the even and odd groups should remain as it was in the input.\n\nYou must solve the problem in O(1) extra space complexity and O(n) time complexity.",
+    "solution": "# Definition for singly-linked list.\n# class ListNode:\n#     def __init__(self, val=0, next=None):\n#         self.val = val\n#         self.next = next\nclass Solution:\n    def oddEvenList(self, head: Optional[ListNode]) -> Optional[ListNode]:\n        if head is None or head.next==None:\n            return head\n        \n        odd = head\n        even = head.next\n        even_head = even \n        while even and even.next:\n            odd.next=even.next\n            odd= odd.next\n            \n            even.next = odd.next\n            even=even.next\n        \n        odd.next=even_head\n        return head",
+    "difficulty": "Medium",
+    "topic": "Linked List",
+    "score": 7.0,
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
+    "summary": "The solution correctly separates odd and even indexed nodes while maintaining their relative order. It uses two pointers to traverse and rewire the list in-place, satisfying the O(1) space and O(n) time requirements.",
+    "statement_sha": "e1997f60936333977ed648d0d585106fe50c4bc9",
+    "solved_at": "2026-06-19T19:26:20.991Z",
+    "updated_at": "2026-06-19T19:26:20.991Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 39,
+  "fields": {
+    "name": "Remove Nth Node From End of List",
+    "statement": "Given the head of a linked list, remove the nth node from the end of the list and return its head.",
+    "solution": "# Definition for singly-linked list.\n# class ListNode:\n#     def __init__(self, val=0, next=None):\n#         self.val = val\n#         self.next = next\nclass Solution(object):\n    def removeNthFromEnd(self, head, n):\n        dummy = ListNode(0)\n        dummy.next = head\n        first = dummy\n        second = dummy\n\n        for _ in range(n + 1):\n            first = first.next\n\n        while first is not None:\n            first = first.next\n            second = second.next\n\n        second.next = second.next.next\n\n        return dummy.next",
+    "difficulty": "Medium",
+    "topic": "Linked List",
+    "score": 8.0,
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
+    "summary": "Uses two pointers technique with a dummy node to efficiently remove the nth node from the end in one pass. The solution correctly handles all edge cases including removing the first node.",
+    "statement_sha": "50b31cbd475fb410e96d851003e89018431e0f74",
+    "solved_at": "2026-06-19T19:26:45.157Z",
+    "updated_at": "2026-06-19T19:26:45.157Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 40,
+  "fields": {
+    "name": "Delete the Middle Node of a Linked List",
+    "statement": "You are given the head of a linked list. Delete the middle node, and return the head of the modified linked list.\n\nThe middle node of a linked list of size n is the ⌊n / 2⌋th node from the start using 0-based indexing, where ⌊x⌋ denotes the largest integer less than or equal to x.\n\nFor n = 1, 2, 3, 4, and 5, the middle nodes are 0, 1, 1, 2, and 2, respectively.",
+    "solution": "# Definition for singly-linked list.\n# class ListNode:\n#     def __init__(self, val=0, next=None):\n#         self.val = val\n#         self.next = next\nclass Solution:\n    def deleteMiddle(self, head: Optional[ListNode]) -> Optional[ListNode]:\n        if (head == None or head.next == None) :\n            return None\n        slow=head\n        fast=head\n        fast=fast.next.next\n        while fast is not None and fast.next is not None:\n            slow=slow.next\n            fast=fast.next.next\n        slow.next = slow.next.next\n        return head\n        \nit solves",
+    "difficulty": "Medium",
+    "topic": "Linked List",
+    "score": 6.0,
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
+    "summary": "The solution uses the two-pointer technique (slow and fast) to find the middle node and delete it. It correctly handles the edge cases of empty and single-node lists, and works for all valid inputs.",
+    "statement_sha": "f89a653cb21ccb47f539b22f09404c90a1c89c12",
+    "solved_at": "2026-06-19T19:27:44.392Z",
+    "updated_at": "2026-06-19T19:27:44.392Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 41,
+  "fields": {
+    "name": "Sort List",
+    "statement": "Given the head of a linked list, return the list after sorting it in ascending order.",
+    "solution": "# Definition for singly-linked list.\n# class ListNode:\n#     def __init__(self, val=0, next=None):\n#         self.val = val\n#         self.next = next\nclass Solution:\n    def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:\n        if not head or not head.next:\n            return head\n        slow = head\n        fast = head.next\n        while fast and fast.next:\n            slow = slow.next\n            fast = fast.next.next\n        mid = slow.next\n        slow.next = None\n        left = self.sortList(head)\n        right = self.sortList(mid)\n        return self.merge(left,right)\n    def merge(self,l1,l2):\n        dummy = tail = ListNode()\n        while l1 and l2:\n            if l1.val<l2.val:\n                tail.next,l1 = l1,l1.next\n            else:\n                tail.next,l2 = l2,l2.next\n            tail = tail.next\n        tail.next = l1 or l2\n        return dummy.next",
+    "difficulty": "Medium",
+    "topic": "Linked List",
+    "score": 8.0,
+    "time_complexity": "O(n log n)",
+    "space_complexity": "O(log n)",
+    "summary": "The solution implements merge sort for linked lists using the divide-and-conquer approach with O(n log n) time complexity. It correctly splits the list into halves and merges them back in sorted order.",
+    "statement_sha": "887740b7c9d75f41d6fadc5e12e273119b147d7e",
+    "solved_at": "2026-06-19T19:28:31.914Z",
+    "updated_at": "2026-06-19T19:28:31.914Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 42,
+  "fields": {
+    "name": "Intersection of Two Linked Lists",
+    "statement": "Given the heads of two singly linked-lists headA and headB, return the node at which the two lists intersect. If the two linked lists have no intersection at all, return null.",
+    "solution": "# Definition for singly-linked list.\n# class ListNode:\n#     def __init__(self, x):\n#         self.val = x\n#         self.next = None\n\nclass Solution:\n    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> Optional[ListNode]:\n        if not headA or not headB:\n            return None \n\n        pA = headA\n        pB = headB\n\n        while pA != pB:\n            pA = headB if pA is None else pA.next\n            pB = headA if pB is None else pB.next\n\n        return pA",
+    "difficulty": "Medium",
+    "topic": "Linked List",
+    "score": 8.0,
+    "time_complexity": "O(m + n)",
+    "space_complexity": "O(1)",
+    "summary": "The solution uses a two-pointer technique where each pointer traverses both lists, effectively aligning them to meet at the intersection node. It correctly handles all cases including no intersection and works in linear time with constant space.",
+    "statement_sha": "4d35a00ba83113eb4f4761f83cb3234830b8a84f",
+    "solved_at": "2026-06-19T19:29:19.984Z",
+    "updated_at": "2026-06-19T19:29:19.984Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 43,
+  "fields": {
+    "name": "Add Two Numbers",
+    "statement": "You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.\n\nYou may assume the two numbers do not contain any leading zero, except the number 0 itself.",
+    "solution": "class Solution:\n    def addTwoNumbers(self, l1, l2):\n        dummy = ListNode(0)\n        curr = dummy\n        carry = 0\n\n        while l1 or l2 or carry:\n            v1 = l1.val if l1 else 0\n            v2 = l2.val if l2 else 0\n\n            total = v1 + v2 + carry\n            carry = total // 10\n            digit = total % 10\n\n            curr.next = ListNode(digit)\n            curr = curr.next\n\n            if l1:\n                l1 = l1.next\n            if l2:\n                l2 = l2.next\n\n        return dummy.next",
+    "difficulty": "Medium",
+    "topic": "Linked List",
+    "score": 8.0,
+    "time_complexity": "O(max(m,n))",
+    "space_complexity": "O(max(m,n))",
+    "summary": "The solution correctly implements addition of two reversed-digit linked lists with proper carry handling. It traverses both lists once, creating a new result list with the correct sum. The logic handles different length lists and final carries properly.",
+    "statement_sha": "5a3c486777110cd6a367f4d2c8cddd85b19e2658",
+    "solved_at": "2026-06-19T19:29:42.878Z",
+    "updated_at": "2026-06-19T19:29:42.878Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 44,
+  "fields": {
+    "name": "Maximum Building Height",
+    "statement": "You want to build n new buildings in a city. The new buildings will be built in a line and are labeled from 1 to n.\n\nHowever, there are city restrictions on the heights of the new buildings:\n\nThe height of each building must be a non-negative integer.\nThe height of the first building must be 0.\nThe height difference between any two adjacent buildings cannot exceed 1.\nAdditionally, there are city restrictions on the maximum height of specific buildings. These restrictions are given as a 2D integer array restrictions where restrictions[i] = [idi, maxHeighti] indicates that building idi must have a height less than or equal to maxHeighti.\n\nIt is guaranteed that each building will appear at most once in restrictions, and building 1 will not be in restrictions.\n\nReturn the maximum possible height of the tallest building.",
+    "solution": "class Solution:\n    def maxBuilding(self, n: int, restrictions: List[List[int]]) -> int:\n        restrictions.append([1, 0])\n\n        # Building n can never exceed n-1\n        restrictions.append([n, n - 1])\n\n        restrictions.sort()\n\n        m = len(restrictions)\n\n        # Left -> Right\n        for i in range(1, m):\n            d = restrictions[i][0] - restrictions[i - 1][0]\n            restrictions[i][1] = min(\n                restrictions[i][1],\n                restrictions[i - 1][1] + d\n            )\n\n        # Right -> Left\n        for i in range(m - 2, -1, -1):\n            d = restrictions[i + 1][0] - restrictions[i][0]\n            restrictions[i][1] = min(\n                restrictions[i][1],\n                restrictions[i + 1][1] + d\n            )\n\n        ans = 0\n\n        # Maximum peak between consecutive restrictions\n        for i in range(1, m):\n            x1, h1 = restrictions[i - 1]\n            x2, h2 = restrictions[i]\n\n            d = x2 - x1\n            ans = max(ans, (h1 + h2 + d) // 2)\n\n        return ans",
+    "difficulty": "Hard",
+    "topic": "Arrays",
+    "score": 8.0,
+    "time_complexity": "O(m log m)",
+    "space_complexity": "O(1)",
+    "summary": "The solution correctly applies a two-pass approach to propagate height constraints from left to right and right to left, then computes the maximum possible height between consecutive restricted buildings. It handles all edge cases and constraints properly.",
+    "statement_sha": "8c1558a0a5dbc034f4963c03209bff04d0eecb07",
+    "solved_at": "2026-06-20T08:13:05.582Z",
+    "updated_at": "2026-06-20T08:13:05.583Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 45,
+  "fields": {
+    "name": "Count Good Numbers",
+    "statement": "A digit string is good if the digits (0-indexed) at even indices are even and the digits at odd indices are prime (2, 3, 5, or 7).\n\nFor example, \"2582\" is good because the digits (2 and 8) at even positions are even and the digits (5 and 2) at odd positions are prime. However, \"3245\" is not good because 3 is at an even index but is not even.\nGiven an integer n, return the total number of good digit strings of length n. Since the answer may be large, return it modulo 109 + 7.\n\nA digit string is a string consisting of digits 0 through 9 that may contain leading zeros.",
+    "solution": "class Solution:\n    def countGoodNumbers(self, n: int) -> int:\n        MOD = 10**9 + 7\n        \n        def power(x, y):\n            res = 1\n            \n            while y > 0:\n                if y % 2:\n                    res = (res * x) % MOD\n                x = (x * x) % MOD\n                y //= 2\n            \n            return res\n        \n        even = (n + 1) // 2\n        odd = n // 2\n        \n        return (power(5, even) * power(4, odd)) % MOD",
+    "difficulty": "Medium",
+    "topic": "Miscellaneous",
+    "score": 8.0,
+    "time_complexity": "O(log n)",
+    "space_complexity": "O(log n)",
+    "summary": "The solution correctly calculates the number of good digit strings by counting valid choices for even and odd indices separately, using modular exponentiation for efficiency. The logic handles the constraints properly and returns results modulo 10^9 + 7.",
+    "statement_sha": "e33405e20159a8ae3d157f44e7761201e5fbb940",
+    "solved_at": "2026-06-20T08:15:23.530Z",
+    "updated_at": "2026-06-20T08:15:23.530Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 46,
+  "fields": {
+    "name": "Generate Parentheses",
+    "statement": "Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.",
+    "solution": "class Solution:\n    def generateParenthesis(self, n: int):\n        res = []\n\n        def backtrack(s, open_count, close_count):\n            if len(s) == 2 * n:\n                res.append(s)\n                return\n            \n            if open_count < n:\n                backtrack(s + \"(\", open_count + 1, close_count)\n            \n            if close_count < open_count:\n                backtrack(s + \")\", open_count, close_count + 1)\n\n        backtrack(\"\", 0, 0)\n        return res",
+    "difficulty": "Medium",
+    "topic": "Recursion",
+    "score": 8.0,
+    "time_complexity": "O(4^n / sqrt(n))",
+    "space_complexity": "O(4^n / sqrt(n))",
+    "summary": "The solution uses backtracking to generate all valid parentheses combinations. It correctly ensures that at no point do closing brackets exceed opening brackets, and that the total length equals 2*n. The approach is sound and handles all valid inputs correctly.",
+    "statement_sha": "7681dd67326cec8adb9dfe2ae172ccd8136aaded",
+    "solved_at": "2026-06-20T11:28:43.868Z",
+    "updated_at": "2026-06-20T11:28:43.868Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 47,
+  "fields": {
+    "name": "Power Set",
+    "statement": "Problem Description: Given a string, find all the possible subsequences of the string.",
+    "solution": "from typing import List\n\nclass Solution:\n    def subsets(self, nums: List[int]) -> List[List[int]]:\n        def backtrack(index: int, ds: List[int]):\n            if index == len(nums):\n                ans.append(ds[:])  # append a copy of ds\n                return\n            \n            # Include the current element\n            ds.append(nums[index])\n            backtrack(index + 1, ds)\n            ds.pop()\n            \n            # Exclude the current element\n            backtrack(index + 1, ds)\n        \n        ans = []\n        backtrack(0, [])\n        return ans",
+    "difficulty": "Medium",
+    "topic": "Recursion",
+    "score": 8.0,
+    "time_complexity": "O(2^n * n)",
+    "space_complexity": "O(2^n * n)",
+    "summary": "The solution correctly generates all subsequences using backtracking. It explores both possibilities for each element (include or exclude) and builds the power set recursively. The time and space complexity are optimal for this problem.",
+    "statement_sha": "b45df4dfc56c1637fbe8590df7e5677c32984c96",
+    "solved_at": "2026-06-20T11:35:29.063Z",
+    "updated_at": "2026-06-20T11:35:29.063Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 48,
+  "fields": {
+    "name": "Count all subsequences with sum K",
+    "statement": "Given an array nums and an integer k.Return the number of non-empty subsequences of nums such that the sum of all elements in the subsequence is equal to k.",
+    "solution": "#Count all subsequences with sum k\ndef printF(index,arr,s,k,count):\n    if index == len(arr):\n        if s == k:\n            return 1\n        else:\n            return 0\n    \n    s+=arr[index]\n    l = printF(index+1,arr,s,k,count)\n\n    s-= arr[index]\n    r = printF(index+1,arr,s,k,count)\n\n    return l+r\n\n\ndef main():\n    nums =[4, 2, 10, 5, 1, 3] \n    s = 0 #current sum\n    k = 5\n    count= 0\n    print(printF(0,nums,s,k,count))\n\nif __name__ == \"__main__\":\n    main()",
+    "difficulty": "Medium",
+    "topic": "Recursion",
+    "score": 7.0,
+    "time_complexity": "O(2^n)",
+    "space_complexity": "O(n)",
+    "summary": "The solution correctly implements a recursive backtracking approach to count all subsequences with sum K. It explores both including and excluding each element, and returns the total count when the base case is reached. The logic is sound and handles the problem requirements accurately.",
+    "statement_sha": "d43399e0a0dce485999434384ee8dec80d11a894",
+    "solved_at": "2026-06-20T11:37:19.036Z",
+    "updated_at": "2026-06-20T11:37:19.036Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 49,
+  "fields": {
+    "name": "Combination Sum II",
+    "statement": "Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations in candidates where the candidate numbers sum to target.\n\nEach number in candidates may only be used once in the combination.\n\nNote: The solution set must not contain duplicate combinations.",
+    "solution": "class Solution:\n    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:\n        candidates.sort()\n        res = []\n\n        def dfs(target, start, comb):\n            if target < 0:\n                return\n            if target == 0:\n                res.append(comb)\n                return\n            for i in range(start, len(candidates)):\n                if i > start and candidates[i] == candidates[i-1]:\n                    continue\n                if candidates[i] > target:\n                    break\n                dfs(target-candidates[i], i+1, comb+[candidates[i]])\n\n        dfs(target, 0, [])\n        return res",
+    "difficulty": "Medium",
+    "topic": "Recursion",
+    "score": 8.0,
+    "time_complexity": "O(2^n)",
+    "space_complexity": "O(2^n)",
+    "summary": "The solution correctly implements backtracking with pruning to find all unique combinations that sum to target. It sorts candidates first to handle duplicates and uses a start index to prevent reusing elements. The approach handles edge cases like duplicates and early termination efficiently.",
+    "statement_sha": "0bfc31127422f9051dd1249096631e524c2e3e86",
+    "solved_at": "2026-06-20T11:43:53.527Z",
+    "updated_at": "2026-06-20T11:43:53.527Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 50,
+  "fields": {
+    "name": "Combination Sum III",
+    "statement": "Find all valid combinations of k numbers that sum up to n such that the following conditions are true:\n\nOnly numbers 1 through 9 are used.\nEach number is used at most once.\nReturn a list of all possible valid combinations. The list must not contain the same combination twice, and the combinations may be returned in any order.",
+    "solution": "class Solution:\n    def combinationSum3(self, k: int, n: int) -> List[List[int]]:\n        res = []\n\n        def dfs(num, target, comb):\n            if target == 0 and len(comb) == k:\n                res.append(comb[:])\n                return\n            \n            if target < 0 or len(comb) > k or num > 9:\n                return\n\n            # pick\n            comb.append(num)\n            dfs(num + 1, target - num, comb)\n            comb.pop()\n\n            # not pick\n            dfs(num + 1, target, comb)\n\n        dfs(1, n, [])\n        return res",
+    "difficulty": "Medium",
+    "topic": "Recursion",
+    "score": 7.0,
+    "time_complexity": "O(2^9)",
+    "space_complexity": "O(k * C(9,k))",
+    "summary": "The solution uses backtracking with DFS to explore all combinations of numbers 1-9. It correctly handles the constraints of using exactly k numbers that sum to n. The approach is sound but has some inefficiencies.",
+    "statement_sha": "b9a3a7905d4db468c62c3d8198683de9610766e0",
+    "solved_at": "2026-06-20T11:46:34.843Z",
+    "updated_at": "2026-06-20T11:46:34.843Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 51,
+  "fields": {
+    "name": "Subset Sum",
+    "statement": "Given an array print all the sum of the subset generated from it, in the increasing order.",
+    "solution": "class Solution:\n    # Recursive helper function to find subset sums\n    def findSums(self, index, currentSum, arr, sums):\n        if index == len(arr):\n            sums.append(currentSum)\n            return\n        # Include current element\n        self.findSums(index + 1, currentSum + arr[index], arr, sums)\n        # Exclude current element\n        self.findSums(index + 1, currentSum, arr, sums)\n\n    def subsetSums(self, arr):\n        sums = []\n        self.findSums(0, 0, arr, sums)\n        sums.sort()\n        return sums\n\n# Driver code\nif __name__ == \"__main__\":\n    sol = Solution()\n    arr = [5, 2, 1]\n    result = sol.subsetSums(arr)\n    print(*result)",
+    "difficulty": "Medium",
+    "topic": "Recursion",
+    "score": 7.0,
+    "time_complexity": "O(2^n * n)",
+    "space_complexity": "O(2^n)",
+    "summary": "The solution correctly generates all subset sums using recursion and sorts them. It handles the problem requirements accurately but has suboptimal time complexity due to sorting.",
+    "statement_sha": "1152cf45179f41ee102e53c72706e49467eeb463",
+    "solved_at": "2026-06-20T11:49:06.081Z",
+    "updated_at": "2026-06-20T11:49:06.084Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 52,
+  "fields": {
+    "name": "Subsets II",
+    "statement": "Given an integer array nums that may contain duplicates, return all possible subsets (the power set).\n\nThe solution set must not contain duplicate subsets. Return the solution in any order.",
+    "solution": "class Solution:\n    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:\n        nums.sort()\n        res = []\n\n        def dfs(start, comb):\n            res.append(comb[:]) \n\n            for i in range(start, len(nums)):\n                # Skip duplicates\n                if i > start and nums[i] == nums[i - 1]:\n                    continue\n                comb.append(nums[i])\n                dfs(i + 1, comb)\n                comb.pop()\n\n        dfs(0, [])\n        return res",
+    "difficulty": "Medium",
+    "topic": "Recursion",
+    "score": 8.0,
+    "time_complexity": "O(2^n)",
+    "space_complexity": "O(2^n)",
+    "summary": "The solution correctly generates all unique subsets using backtracking with duplicate skipping. It sorts the input first to group duplicates together, then uses a condition to skip duplicates at each level of recursion. The approach is sound and handles all required constraints.",
+    "statement_sha": "6c42ec5b44a23e77fb78f2eb841e13530b7960b6",
+    "solved_at": "2026-06-20T11:50:22.423Z",
+    "updated_at": "2026-06-20T11:50:22.423Z"
+  }
+},
+{
+  "model": "reviewer.solvedproblem",
+  "pk": 53,
+  "fields": {
+    "name": "Letter Combinations of a Phone Number",
+    "statement": "Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent. Return the answer in any order.\n\nA mapping of digits to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.",
+    "solution": "class Solution:\n    def letterCombinations(self, digits: str):\n        if not digits:\n            return []\n\n        dic = {\n            '2': ['a','b','c'],\n            '3': ['d','e','f'],\n            '4': ['g','h','i'],\n            '5': ['j','k','l'],\n            '6': ['m','n','o'],\n            '7': ['p','q','r','s'],\n            '8': ['t','u','v'],\n            '9': ['w','x','y','z'],\n        }\n\n        res = []\n\n        def dfs(index, path):\n            if index == len(digits):\n                res.append(path)\n                return\n\n            for ch in dic[digits[index]]:\n                dfs(index + 1, path + ch)\n\n        dfs(0, \"\")\n        return res",
+    "difficulty": "Hard",
+    "topic": "Recursion",
+    "score": 8.0,
+    "time_complexity": "O(3^m * 4^n)",
+    "space_complexity": "O(3^m * 4^n)",
+    "summary": "The solution uses backtracking (DFS) to generate all possible letter combinations. It correctly handles the digit-to-letter mapping and explores all valid paths. The approach is sound and produces correct results for all valid inputs.",
+    "statement_sha": "cf6f237f57e34c823b0b4c731f85bc96348a8bd5",
+    "solved_at": "2026-06-20T13:27:54.129Z",
+    "updated_at": "2026-06-20T13:27:54.132Z"
+  }
+}
+]

@@ -1,0 +1,10 @@
+# LangChain 1.x: legacy helpers (OutputFixingParser) live in langchain-classic.
+django>=5.0
+dj-database-url>=2.1
+psycopg[binary]>=3.1
+gunicorn>=21.0  # WSGI server for production (Render); unused by local runserver
+langchain>=1.0
+langchain-core>=1.0
+langchain-classic>=1.0
+langchain-huggingface>=1.0
+python-dotenv>=1.0
